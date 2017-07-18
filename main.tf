@@ -51,8 +51,8 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
-resource "aws_security_group" "datalab_test_sg" {
-  name = "datalab_test_sg"
+resource "aws_security_group" "datalab_test" {
+  name = "datalab_test"
 	#vpc_id = "${aws_vpc.datalake_vpc.id}"
   ingress {
     from_port   = 22
@@ -80,7 +80,7 @@ resource "aws_instance" "test" {
   ami                    = "${var.aws_ami}"
   instance_type          = "${var.aws_instance_type}"
 	key_name               = "${var.aws_key_name}"
-  vpc_security_group_ids = ["${aws_security_group.datalab_test_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.datalab_test.id}"]
 	tags {
   	Name = "datalab-test"
   }
@@ -100,7 +100,8 @@ resource "aws_instance" "test" {
       "sudo yum install -y epel-release",
       "sudo yum install -y python-pip",
       "sudo pip install --upgrade pip",
-      "sudo pip install docker-compose"
+      "sudo pip install docker-compose", 
+			"sudo yum install git -y"
 			]	
     connection {
       type        = "ssh"
